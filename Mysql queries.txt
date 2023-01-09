@@ -1,0 +1,75 @@
+1. Find the min, max and average salary range of employees?(7)
+
+USE sqldemo;
+SHOW tables;
+CREATE TABLE Employee(
+Empid int primary key,
+Empname varchar(30),
+Position varchar(30),
+Department varchar(40),
+Hireddate datetime,
+Salary decimal(10,2)
+);
+DESCRIBE Employee;
+
+Insert into Employee values(1, "Madhu", "Manager", "Admin", '2018-11-01', 50000);
+Insert into Employee values(2, "Ram", "QA", "Finance", '1999-12-17', 45000);
+Insert into Employee values(3, "Abi", "Developer", "Admin", '2022-08-21', 30000);
+Insert into Employee values(4, "Rakesh", "Analyst", "Finance", '2021-02-14', 70000);
+Insert into Employee values(5, "Suji", "Clerk", "Finance", '2014-06-04', 85000);
+Insert into Employee values(6, "Bindhu", "CEO", "Finance", '2016-09-07', 55000);
+Insert into Employee values(7, "Sita", "Manager", "Admin", '2017-02-28', 40000);
+Insert into Employee values(8, "Mala", "Manager", "Admin", '2019-09-31', 30000);
+
+*SELECT Empname,Salary FROM Employee where Salary = (select max(Salary) from Employee);
+*SELECT Empname,Salary FROM Employee where Salary = (select min(Salary) from Employee);
+*select Empname,Department,Salary,avg(salary) OVER(partition by Department) AS avg_salary from Employee
+
+2. Find the employees who joined the company after 15th of the month?(3)
+
+* SELECT * FROM Employee WHERE EXTRACT(day FROM Hireddate) > 15
+
+3. Find the maximum salary from each department? (8)
+
+SELECT Empname,Department,
+SALARY FROM Employee WHERE
+SALARY IN (SELECT max(SALARY) FROM
+Employee GROUP BY Department);
+
+4. Write a SQL query to display the 5 least earning employees? (1)
+
+* select distinct salary from employee order by salary asc limit 5;
+
+5. Find the count of employees in each department: (5)
+
+* SELECT Department, COUNT(*) FROM Employee GROUP BY Department;
+
+
+6. Get the count of employees hired year wise? (6)
+
+* select EXTRACT(YEAR FROM Hireddate),count(*) from Employee group by EXTRACT(YEAR FROM Hireddate);
+
+7. Write a query to show count of employees under each manager in descending order?
+
+* SELECT managerid, COUNT(Empid) FROM Employees1 GROUP BY managerid ORDER BY COUNT(Empid) DESC;
+
+8. Write a query to select employees and their corresponding managers and their salaries?
+
+SELECT * FROM Employees1 WHERE (Empid IN (SELECT managerid FROM Employees1)); 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
